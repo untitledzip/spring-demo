@@ -3,11 +3,12 @@ package com.example.repository;
 import com.example.entity.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredicateExecutor<Item> {
     
     /* 쿼리 메소드를 이용한 상품 조회하기
        - 쿼리 메소드를 이용할 때 가장 많이 사용되는 문법으로 find를 사용
@@ -36,4 +37,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query(value = "select * from item i where i.item_detail like %:itemDetail% order by i.price desc", nativeQuery = true)
     List<Item> findByItemDeatilByNative(@Param("itemDetail") String itemDetail);
+
+
 }
