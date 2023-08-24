@@ -19,7 +19,7 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -28,7 +28,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus; //주문 상태
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     /* cascade = CascadeType.ALL: 부모 엔티티의 영속성 상태 변화를 자식 엔티티에 모두 전이하는 설정 */
     private List<OrderItem> orderItems = new ArrayList<>();
 
