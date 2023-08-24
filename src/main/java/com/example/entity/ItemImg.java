@@ -28,7 +28,7 @@ public class ItemImg extends BaseEntity{
     private Item item;
 
     //파라미터로 입력 받아서 이미지 정보를 업데이트하는 메소드
-    private void updateItemImg(String oriImgName, String imgName, String imgUrl){
+    public void updateItemImg(String oriImgName, String imgName, String imgUrl){
         this.oriImgName = oriImgName;
         this.imgName = imgName;
         this.imgUrl = imgUrl;
