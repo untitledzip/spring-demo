@@ -33,7 +33,7 @@ class ItemServiceTest {
     @Autowired
     ItemRepository itemRepository;
 
-    @Autowire
+    @Autowired
     ItemImgRepository itemImgRepository;
 
     List<MultipartFile> createMultipartFiles()throws Exception {

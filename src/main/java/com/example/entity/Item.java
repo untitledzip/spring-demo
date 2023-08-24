@@ -1,6 +1,7 @@
 package com.example.entity;
 
 import com.example.constant.ItemSellStatus;
+import com.example.dto.ItemFormDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -37,4 +38,12 @@ public class Item {
     private LocalDateTime regTime; //등록 시간
     
     private LocalDateTime updateTime; //수정 시간
+
+    public void updateItem(ItemFormDto itemFormDto){
+        this.itemNm = itemFormDto.getItemNm();
+        this.price = itemFormDto.getPrice();
+        this.stockNumber = itemFormDto.getStockNumber();
+        this.itemDetail = itemFormDto.getItemDetail();
+        this.itemSellStatus = itemFormDto.getItemSellStatus();
+    }
 }

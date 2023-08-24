@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -65,10 +66,22 @@ public class ItemService {
 
     }
 
-    public void updateItemImg(Long itemImgId, MultipartFile itemImgFile) throws Exception{
-        if(!itemImgFile.isEmpty()){
-            ItemImg savedItemImg = itemImgRepository.findById(itemImgId)
-                    .orElseThrow(EntityNotFoundException::new);
+    public Long updateItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception {
+
+        //상품 수정
+        Item item = itemRepository.findById(itemFormDto.getId())
+                .orElseThrow(EntityNotFoundException::new);
+        item.updateItem(itemFormDto);
+
+        List<Long> itemImgIds = itemFormDto.getItemImgIds();
+
+        //이미지 등록
+        for(int i=0;i<itemImgFileList.size();i++){
+            itemImgService.updateItemImg(itemImgIds.get(i), itemImgFileList.get(i));
         }
+
+        return item.getId();
+
     }
+
 }
