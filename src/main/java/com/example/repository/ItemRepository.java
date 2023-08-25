@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredicateExecutor<Item> {
+public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredicateExecutor<Item>, ItemRepositoryCustom {
     
     /* 쿼리 메소드를 이용한 상품 조회하기
        - 쿼리 메소드를 이용할 때 가장 많이 사용되는 문법으로 find를 사용
@@ -36,7 +36,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredi
     //@Param으로 파라미터로 넘어온 값을 JPQL에 들어갈 변수로 지정해 줄 수 있음
 
     @Query(value = "select * from item i where i.item_detail like %:itemDetail% order by i.price desc", nativeQuery = true)
-    List<Item> findByItemDeatilByNative(@Param("itemDetail") String itemDetail);
+    List<Item> findByItemDetailByNative(@Param("itemDetail") String itemDetail);
 
 
 }

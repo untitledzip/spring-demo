@@ -18,7 +18,6 @@ import java.io.File;
 @Transactional
 public class ItemImgService {
 
-
     @Value("${itemImgLocation}")
     private String itemImgLocation;
 
@@ -33,7 +32,8 @@ public class ItemImgService {
 
         //파일 업로드
         if(!StringUtils.isEmpty(oriImgName)){
-            imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
+            imgName = fileService.uploadFile(itemImgLocation, oriImgName,
+                    itemImgFile.getBytes());
             imgUrl = "/images/item/" + imgName;
         }
 
@@ -48,8 +48,9 @@ public class ItemImgService {
                     .orElseThrow(EntityNotFoundException::new);
 
             //기존 이미지 파일 삭제
-            if(!StringUtils.isEmpty(savedItemImg.getImgName())){
-                fileService.deleteFile(itemImgLocation + "/" + savedItemImg.getImgName());
+            if(!StringUtils.isEmpty(savedItemImg.getImgName())) {
+                fileService.deleteFile(itemImgLocation+"/"+
+                        savedItemImg.getImgName());
             }
 
             String oriImgName = itemImgFile.getOriginalFilename();

@@ -36,35 +36,36 @@ class ItemServiceTest {
     @Autowired
     ItemImgRepository itemImgRepository;
 
-    List<MultipartFile> createMultipartFiles()throws Exception {
+    List<MultipartFile> createMultipartFiles() throws Exception{
 
-        List<MultipartFile> multipartFilesList = new ArrayList<>();
+        List<MultipartFile> multipartFileList = new ArrayList<>();
 
         for(int i=0;i<5;i++){
-            String path = "D:/spring-demo/item/";
+            String path = "C:/shop/item/";
             String imageName = "image" + i + ".jpg";
-            MockMultipartFile multipartFile = new MockMultipartFile(path, imageName,
-                    "image/jpg", new byte[]{1,2,3,4});
-            multipartFilesList.add(multipartFile);
+            MockMultipartFile multipartFile =
+                    new MockMultipartFile(path, imageName, "image/jpg", new byte[]{1,2,3,4});
+            multipartFileList.add(multipartFile);
         }
 
-        return multipartFilesList;
+        return multipartFileList;
     }
 
     @Test
     @DisplayName("상품 등록 테스트")
-    @WithMockUser(username = "admin123", roles="ADMIN")
-    void savedItem() throws Exception{
+    @WithMockUser(username = "admin", roles = "ADMIN")
+    void saveItem() throws Exception {
         ItemFormDto itemFormDto = new ItemFormDto();
-        itemFormDto.setItemNm("테스트 상품1");
+        itemFormDto.setItemNm("테스트상품");
         itemFormDto.setItemSellStatus(ItemSellStatus.SELL);
-        itemFormDto.setPrice(10000);
+        itemFormDto.setItemDetail("테스트 상품 입니다.");
+        itemFormDto.setPrice(1000);
         itemFormDto.setStockNumber(100);
 
         List<MultipartFile> multipartFileList = createMultipartFiles();
         Long itemId = itemService.saveItem(itemFormDto, multipartFileList);
-
         List<ItemImg> itemImgList = itemImgRepository.findByItemIdOrderByIdAsc(itemId);
+
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -75,5 +76,6 @@ class ItemServiceTest {
         assertEquals(itemFormDto.getStockNumber(), item.getStockNumber());
         assertEquals(multipartFileList.get(0).getOriginalFilename(), itemImgList.get(0).getOriImgName());
     }
+
 
 }
