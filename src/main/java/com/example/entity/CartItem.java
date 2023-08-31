@@ -4,12 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 
 @Entity
 @Table(name = "cart_item_id")
 @Getter @Setter
-public class CartItem {
+public class CartItem extends BaseEntity{
 
     @Id
     @GeneratedValue
@@ -25,4 +26,18 @@ public class CartItem {
     private Item item;
 
     private int count;
+
+    public static CartItem createCartItem(Cart cart, Item item, int count){
+        CartItem cartItem = new CartItem();
+        cartItem.setCart(cart);
+        cartItem.setItem(item);
+        cartItem.setCount(count);
+
+        return cartItem;
+    }
+
+    public void addCount(int count){
+        this.count += count;
+    }
+
 }

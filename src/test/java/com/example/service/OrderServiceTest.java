@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.constant.ItemSellStatus;
+import com.example.constant.OrderStatus;
 import com.example.dto.OrderDto;
 import com.example.entity.Item;
 import com.example.entity.Member;
@@ -9,6 +10,7 @@ import com.example.entity.OrderItem;
 import com.example.repository.ItemRepository;
 import com.example.repository.MemberRepository;
 import com.example.repository.OrderRepository;
+import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +78,25 @@ class OrderServiceTest {
 
         assertEquals(totalPrice, order.getTotalPrice());
 
+    }
+
+    @Test
+    @DisplayName("주문 취소 테스트")
+    public void cancelOrder(){
+        Item item = savedItem();
+        Member member = saveMember();
+
+        OrderDto orderDto = new OrderDto();
+        orderDto.setCount(10);
+        orderDto.setItemId(item.getId());
+        Long orderId = orderService.order(orderDto, member.getEmail());
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new);
+        orderService.cancelOrder(orderId);
+
+        assertEquals(OrderStatus.CANCEL, order.getOrderStatus());
+        assertEquals(100, item.getStockNumber());
     }
 
 }
